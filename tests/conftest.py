@@ -7,10 +7,7 @@ from sqlalchemy.pool import NullPool
 from DB.database import Base, get_db
 from app.main import app
 
-DATABASE_URL = os.getenv(
-    "TEST_DATABASE_URL",
-    "postgresql+psycopg2://user-db:password123@db:5432/battleship"
-)
+DATABASE_URL = os.environ["TEST_DATABASE_URL"]
 engine = create_engine(DATABASE_URL, poolclass=NullPool)
 TestingSessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
