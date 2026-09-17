@@ -22,7 +22,16 @@ class GameSession(Base):
         nullable=False
     )
     
-    ships: Mapped[list] = mapped_column(JSON, nullable=False)
+    ships: Mapped[list] = mapped_column(
+        JSON, 
+        nullable=False
+    )
+
+    hits: Mapped[list] = mapped_column(
+        JSON,
+        nullable=False,
+        default=list
+    )
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),

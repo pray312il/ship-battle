@@ -17,6 +17,9 @@ def _parse_coordinate(coord: str) -> tuple[int, int]:
         raise ValueError(f"Координата вне поля: {coord!r}")
     return COLUMNS.index(col_letter), row - 1
 
+def parse_coordinate(coord: str) -> tuple[int, int]:
+    return _parse_coordinate(coord)
+
 def _diagonal_neighbors(cell: tuple[int, int]) -> set[tuple[int, int]]:
     x, y = cell
     return {(x + dx, y + dy) for dx in (-1, 0, 1) for dy in (-1, 0, 1)}
