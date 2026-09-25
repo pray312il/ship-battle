@@ -16,3 +16,14 @@ class OpponentShotRequest(BaseModel):
 
 class OpponentShotResponse(BaseModel):
     result: str
+
+class ShotResponse(BaseModel):
+    coordinate: str
+
+
+class ShotResultRequest(BaseModel):
+    result: str
+
+
+class ShotResultResponse(BaseModel):
+    status: str

@@ -24,6 +24,9 @@ def _diagonal_neighbors(cell: tuple[int, int]) -> set[tuple[int, int]]:
     x, y = cell
     return {(x + dx, y + dy) for dx in (-1, 0, 1) for dy in (-1, 0, 1)}
 
+def diagonal_neighbors(cell: tuple[int, int]) -> set[tuple[int, int]]:
+    return _diagonal_neighbors(cell)
+
 def _is_straight_and_contiguous(cells: list[tuple[int, int]]) -> bool:
     if len(cells) == 1:
         return True
@@ -104,6 +107,9 @@ def _try_place_ship(size: int, placed_cells: set[tuple[int, int]], attempts: int
 def _to_coord(cell: tuple[int, int]) -> str:
     x, y = cell
     return f"{COLUMNS[x]}{y + 1}"
+
+def to_coord(cell: tuple[int, int]) -> str:
+    return _to_coord(cell)
 
 def generate_fleet() -> list[dict]:
     max_restarts = 200
