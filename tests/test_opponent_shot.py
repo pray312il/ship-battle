@@ -19,7 +19,7 @@ def _create_session(ships,status="active"):
 
 def test_opponent_miss(client):
     session_id = _create_session(SIMPLE_SHIPS)
-    response = client.post(f"/game/{session_id}/opponent-shot", json={"coordinates": "J10"})
+    response = client.post(f"/game/{session_id}/opponent-shot", json={"coordinate": "J10"})
     assert response.status_code == 200
     assert response.json()["result"] == "miss"
 

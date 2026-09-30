@@ -4,7 +4,7 @@ from app.services.fleet import generate_fleet, parse_coordinate
 from app.services.targeting import pick_next_shot, build_target_queue, surrounding_cells
 from DB.database import get_db
 from DB.models.models import GameSession
-from DB.schemas.schemas import StartGameResponse, OpponentShotRequest, OpponentShotResponse, ShotResponse, ShotResultRequest, ShotResultResponse
+from DB.schemas.schemas import StartGameResponse, OpponentShotRequest, OpponentShotResponse, ShotResponse, ShotResultRequest, ShotResultResponse, CloseGameResponse
 import uuid
 
 router = APIRouter()
@@ -108,9 +108,8 @@ def accept_shot_result(
         sunk_ship_cells = current_hits + [coordinate]
         for cell in surrounding_cells(sunk_ship_cells):
             own_shots.setdefault(cell, "miss")
-
-    current_hits = []
-    target_queue = []
+        current_hits = []
+        target_queue = []
 
     session.own_shots = own_shots
     session.current_hits = current_hits
@@ -119,3 +118,16 @@ def accept_shot_result(
     db.commit()
 
     return ShotResultResponse(status="accepted")
+
+@router.post("/game/{session_id}/close", response_model=CloseGameResponse)
+def close_game(session_id: uuid.UUID, db: Session = Depends(get_db)):
+    session = db.get(GameSession, session_id)
+    if session is None:
+        raise HTTPException(status_code=404, detail="Сессия не найдена")
+    if session.status == "closed":
+        raise HTTPException(status_code=400, detail="Сессия уже закрыта")
+
+    session.status = "closed"
+    db.commit()
+
+    return CloseGameResponse(status="closed")
