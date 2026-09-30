@@ -27,3 +27,6 @@ class ShotResultRequest(BaseModel):
 
 class ShotResultResponse(BaseModel):
     status: str
+
+class CloseGameResponse(BaseModel):
+    status: str
