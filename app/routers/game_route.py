@@ -28,7 +28,7 @@ def opponent_shot(
     payload: OpponentShotRequest,
     db: Session = Depends(get_db),
 ):
-    session = db.get(GameSession, session_id)
+    session = db.get(GameSession, session_id, with_for_update=True)
     if session is None:
         raise HTTPException(status_code=404, detail="Сессия не найдена")
     if session.status == "closed":
@@ -61,7 +61,7 @@ def opponent_shot(
     
 @router.post("/game/{session_id}/shot", response_model=ShotResponse)
 def make_shot(session_id: uuid.UUID, db: Session = Depends(get_db)):
-    session = db.get(GameSession, session_id)
+    session = db.get(GameSession, session_id, with_for_update=True)
     if session is None:
         raise HTTPException(status_code=404, detail="Сессия не найдена")
     if session.status == "closed":
@@ -83,7 +83,7 @@ def accept_shot_result(
     payload: ShotResultRequest,
     db: Session = Depends(get_db),
 ):
-    session = db.get(GameSession, session_id)
+    session = db.get(GameSession, session_id, with_for_update=True)
     if session is None:
         raise HTTPException(status_code=404, detail="Сессия не найдена")
     if session.status == "closed":
@@ -121,7 +121,7 @@ def accept_shot_result(
 
 @router.post("/game/{session_id}/close", response_model=CloseGameResponse)
 def close_game(session_id: uuid.UUID, db: Session = Depends(get_db)):
-    session = db.get(GameSession, session_id)
+    session = db.get(GameSession, session_id, with_for_update=True)
     if session is None:
         raise HTTPException(status_code=404, detail="Сессия не найдена")
     if session.status == "closed":
